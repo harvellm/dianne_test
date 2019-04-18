@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+<!--
+Copyright 2012 Mozilla Foundation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Adobe CMap resources are covered by their own copyright but the same license:
+
+    Copyright 1990-2015 Adobe Systems Incorporated.
+
+See https://github.com/adobe-type-tools/cmap-resources
+-->
+<html dir="ltr" mozdisallowselectionprint moznomarginboxes>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="google" content="notranslate">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>PDF viewer</title>
+    <link rel="stylesheet" href="viewer.css"/>
+    <link rel="stylesheet" href="magazine.css" />
+    
+    </head>
+
+  <body tabindex="1" class="loadingInProgress">
+    <div id="outerContainer">
+
+      <div id="sidebarContainer">
+        <div id="toolbarSidebar">
+          <div class="splitToolbarButton toggled">
+            <button id="viewThumbnail" class="toolbarButton group toggled" title="Show Thumbnails" tabindex="2" >
+               <span >Thumbnails</span>
+            </button>
+            <button id="viewOutline" class="toolbarButton group" title="Show Document Outline" tabindex="3" >
+               <span >Document Outline</span>
+            </button>
+            <button id="viewAttachments" class="toolbarButton group" title="Show Attachments" tabindex="4" >
+               <span >Attachments</span>
+            </button>
+          </div>
+        </div>
+        <div id="sidebarContent">
+          <div id="thumbnailView">
+          </div>
+          <div id="outlineView" class="hidden">
+          </div>
+          <div id="attachmentsView" class="hidden">
+          </div>
+        </div>
+      </div>  <!-- sidebarContainer -->
+
+      <div id="mainContainer">
+        <div class="findbar hidden doorHanger hiddenSmallView" id="findbar">
+          <label for="findInput" class="toolbarLabel" >Find:</label>
+          <input id="findInput" class="toolbarField" tabindex="91">
+          <div class="splitToolbarButton">
+            <button class="toolbarButton findPrevious" title="" id="findPrevious" tabindex="92" >
+              <span >Previous</span>
+            </button>
+            <div class="splitToolbarButtonSeparator"></div>
+            <button class="toolbarButton findNext" title="" id="findNext" tabindex="93" >
+              <span >Next</span>
+            </button>
+          </div>
+          <input type="checkbox" id="findHighlightAll" class="toolbarField" tabindex="94">
+          <label for="findHighlightAll" class="toolbarLabel" >Highlight all</label>
+          <input type="checkbox" id="findMatchCase" class="toolbarField" tabindex="95">
+          <label for="findMatchCase" class="toolbarLabel" >Match case</label>
+          <span id="findResultsCount" class="toolbarLabel hidden"></span>
+          <span id="findMsg" class="toolbarLabel"></span>
+        </div>  <!-- findbar -->
+
+        <div id="secondaryToolbar" class="secondaryToolbar hidden doorHangerRight">
+          <div id="secondaryToolbarButtonContainer">
+            <button id="secondaryPresentationMode" class="secondaryToolbarButton presentationMode visibleLargeView" title="Switch to Presentation Mode" tabindex="51" >
+              <span >Presentation Mode</span>
+            </button>
+
+            <button id="secondaryOpenFile" class="secondaryToolbarButton openFile visibleLargeView" title="Open File" tabindex="52" >
+              <span >Open</span>
+            </button>
+
+            <button id="secondaryPrint" class="secondaryToolbarButton print visibleMediumView" title="Print" tabindex="53" >
+              <span >Print</span>
+            </button>
+
+            <button id="secondaryDownload" class="secondaryToolbarButton download visibleMediumView" title="Download" tabindex="54" >
+              <span >Download</span>
+            </button>
+
+            <a href="#" id="secondaryViewBookmark" class="secondaryToolbarButton bookmark visibleSmallView" title="Current view (copy or open in new window)" tabindex="55" >
+              <span >Current View</span>
+            </a>
+
+            <div class="horizontalToolbarSeparator visibleLargeView"></div>
+
+            <button id="firstPage" class="secondaryToolbarButton firstPage" title="Go to First Page" tabindex="56" >
+              <span >Go to First Page</span>
+            </button>
+            <button id="lastPage" class="secondaryToolbarButton lastPage" title="Go to Last Page" tabindex="57" >
+              <span >Go to Last Page</span>
+            </button>
+
+            <div class="horizontalToolbarSeparator"></div>
+
+            <button id="pageRotateCw" class="secondaryToolbarButton rotateCw" title="Rotate Clockwise" tabindex="58" >
+              <span >Rotate Clockwise</span>
+            </button>
+            <button id="pageRotateCcw" class="secondaryToolbarButton rotateCcw" title="Rotate Counterclockwise" tabindex="59" >
+              <span >Rotate Counterclockwise</span>
+            </button>
+
+            <div class="horizontalToolbarSeparator"></div>
+
+            <button id="toggleHandTool" class="secondaryToolbarButton handTool" title="Enable hand tool" tabindex="60" >
+              <span >Enable hand tool</span>
+            </button>
+
+            <div class="horizontalToolbarSeparator"></div>
+
+            <button id="documentProperties" class="secondaryToolbarButton documentProperties" title="Document Properties…" tabindex="61" >
+              <span >Document Properties…</span>
+            </button>
+          </div>
+        </div>  <!-- secondaryToolbar -->
+
+        <div class="toolbar">
+          <div id="toolbarContainer">
+            <div id="toolbarViewer">
+              <div id="toolbarViewerLeft">
+                <button id="sidebarToggle" class="toolbarButton" title="Toggle Sidebar" tabindex="11" >
+                  <span >Toggle Sidebar</span>
+                </button>
+                <div class="toolbarButtonSpacer"></div>
+                <button id="viewFind" class="toolbarButton group hiddenSmallView" title="Find in Document" tabindex="12" >
+                   <span >Find</span>
+                </button>
+                <div class="splitToolbarButton">
+                  <button class="toolbarButton pageUp" title="Previous Page" id="previous" tabindex="13" >
+                    <span >Previous</span>
+                  </button>
+                  <div class="splitToolbarButtonSeparator"></div>
+                  <button class="toolbarButton pageDown" title="Next Page" id="next" tabindex="14" >
+                    <span >Next</span>
+                  </button>
+                </div>
+                <label id="pageNumberLabel" class="toolbarLabel" for="pageNumber" >Page: </label>
+                <input type="number" id="pageNumber" class="toolbarField pageNumber" value="1" size="4" min="1" tabindex="15">
+                <span id="numPages" class="toolbarLabel"></span>
+              </div>
+              <div id="toolbarViewerRight">
+                <button id="presentationMode" class="toolbarButton presentationMode hiddenLargeView" title="Switch to Presentation Mode" tabindex="31" >
+                  <span >Presentation Mode</span>
+                </button>
+
+                <!--<button id="openFile" class="toolbarButton openFile hiddenLargeView" title="Open File" tabindex="32" >
+                  <span >Open</span>
+                </button>-->
+
+                <button id="print" class="toolbarButton print hiddenMediumView" title="Print" tabindex="33" >
+                  <span >Print</span>
+                </button>
+
+                <button id="download" class="toolbarButton download hiddenMediumView" title="Download" tabindex="34" >
+                  <span >Download</span>
+                </button>
+                <a href="#" id="viewBookmark" class="toolbarButton bookmark hiddenSmallView" title="Current view (copy or open in new window)" tabindex="35" >
+                  <span >Current View</span>
+                </a>
+
+                <div class="verticalToolbarSeparator hiddenSmallView"></div>
+
+                <button id="secondaryToolbarToggle" class="toolbarButton" title="Tools" tabindex="36" >
+                  <span >Tools</span>
+                </button>
+              </div>
+              <div class="outerCenter">
+                <div class="innerCenter" id="toolbarViewerMiddle">
+                  <div class="splitToolbarButton">
+                    <button id="zoomOut" class="toolbarButton zoomOut" title="Zoom Out" tabindex="21" >
+                      <span >Zoom Out</span>
+                    </button>
+                    <div class="splitToolbarButtonSeparator"></div>
+                    <button id="zoomIn" class="toolbarButton zoomIn" title="Zoom In" tabindex="22" >
+                      <span >Zoom In</span>
+                     </button>
+                  </div>
+                  <span id="scaleSelectContainer" class="dropdownToolbarButton">
+                     <select id="scaleSelect" title="Zoom" tabindex="23" >
+                      <option id="pageAutoOption" title="" value="auto" selected="selected" >Automatic Zoom</option>
+                      <option id="pageActualOption" title="" value="page-actual" >Actual Size</option>
+                      <option id="pageFitOption" title="" value="page-fit" >Fit Page</option>
+                      <option id="pageWidthOption" title="" value="page-width" >Full Width</option>
+                      <option id="customScaleOption" title="" value="custom"></option>
+                      <option title="" value="0.5" : 50 }'>50%</option>
+                      <option title="" value="0.75" : 75 }'>75%</option>
+                      <option title="" value="1" : 100 }'>100%</option>
+                      <option title="" value="1.25" : 125 }'>125%</option>
+                      <option title="" value="1.5" : 150 }'>150%</option>
+                      <option title="" value="2" : 200 }'>200%</option>
+                      <option title="" value="3" : 300 }'>300%</option>
+                      <option title="" value="4" : 400 }'>400%</option>
+                    </select>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div id="loadingBar">
+              <div class="progress">
+                <div class="glimmer">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <menu type="context" id="viewerContextMenu">
+          <menuitem id="contextFirstPage" label="First Page"
+                    ></menuitem>
+          <menuitem id="contextLastPage" label="Last Page"
+                    ></menuitem>
+          <menuitem id="contextPageRotateCw" label="Rotate Clockwise"
+                    ></menuitem>
+          <menuitem id="contextPageRotateCcw" label="Rotate Counter-Clockwise"
+                    ></menuitem>
+        </menu>
+
+        <div id="viewerContainer" tabindex="0">
+          <div id="viewer" class="pdfViewer"></div>
+            
+        </div>
+
+        <div id="errorWrapper" hidden='true'>
+          <div id="errorMessageLeft">
+            <span id="errorMessage"></span>
+            <button id="errorShowMore" >
+              More Information
+            </button>
+            <button id="errorShowLess"  hidden='true'>
+              Less Information
+            </button>
+          </div>
+          <div id="errorMessageRight">
+            <button id="errorClose" >
+              Close
+            </button>
+          </div>
+          <div class="clearBoth"></div>
+          <textarea id="errorMoreInfo" hidden='true' readonly="readonly"></textarea>
+        </div>
+      </div> <!-- mainContainer -->
+
+      <div id="overlayContainer" class="hidden">
+        <div id="passwordOverlay" class="container hidden">
+          <div class="dialog">
+            <div class="row">
+              <p id="passwordText" >Enter the password to open this PDF file:</p>
+            </div>
+            <div class="row">
+              <input type="password" id="password" class="toolbarField" />
+            </div>
+            <div class="buttonRow">
+              <button id="passwordCancel" class="overlayButton"><span >Cancel</span></button>
+              <button id="passwordSubmit" class="overlayButton"><span >OK</span></button>
+            </div>
+          </div>
+        </div>
+        <div id="documentPropertiesOverlay" class="container hidden">
+          <div class="dialog">
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="row">
+              <span >-</p>
+            </div>
+            <div class="buttonRow">
+              <button id="documentPropertiesClose" class="overlayButton"><span >Close</span></button>
+            </div>
+          </div>
+        </div>
+      </div>  <!-- overlayContainer -->
+
+    </div> <!-- outerContainer -->
+    <div id="printContainer"></div>
+<div id="mozPrintCallback-shim" hidden>
+  <style>
+@media print {
+  #printContainer div {
+    page-break-after: always;
+    page-break-inside: avoid;
+  }
+}
+  </style>
+  <style scoped>
+#mozPrintCallback-shim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 9999999;
+
+  display: block;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+#mozPrintCallback-shim[hidden] {
+  display: none;
+}
+@media print {
+  #mozPrintCallback-shim {
+    display: none;
+  }
+}
+
+#mozPrintCallback-shim .mozPrintCallback-dialog-box {
+  display: inline-block;
+  margin: -50px auto 0;
+  position: relative;
+  top: 45%;
+  left: 0;
+  min-width: 220px;
+  max-width: 400px;
+
+  padding: 9px;
+
+  border: 1px solid hsla(0, 0%, 0%, .5);
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+
+  background-color: #474747;
+
+  color: hsl(0, 0%, 85%);
+  font-size: 16px;
+  line-height: 20px;
+}
+#mozPrintCallback-shim .progress-row {
+  clear: both;
+  padding: 1em 0;
+}
+#mozPrintCallback-shim progress {
+  width: 100%;
+}
+#mozPrintCallback-shim .relative-progress {
+  clear: both;
+  float: right;
+}
+#mozPrintCallback-shim .progress-actions {
+  clear: both;
+}
+  </style>
+  <div class="mozPrintCallback-dialog-box">
+    Preparing document for printing...
+    <div class="progress-row">
+      <progress value="0" max="100"></progress>
+      <span class="relative-progress">0%</span>
+    </div>
+    <div class="progress-actions">
+      <input type="button" value="Cancel" class="mozPrintCallback-cancel">
+    </div>
+  </div>
+</div>
+      <script src="compatibility.js"></script>
+      <!-- This snippet is used in production (included from viewer.html) -->
+     <!-- <link rel="resource" type="application/l10n" href="locale/locale.properties" />-->
+      <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+      <script src="./turnjs4/lib/turn.min.js"></script>
+      <script src="./turnjs4/lib/zoom.min.js"></script>
+     <script src="l10n.js"></script>
+      <script src="./build/pdf.js"></script>
+      <script src="debugger.js"></script> 
+      <script src="viewer.js"></script>
+      <script src="magazine.js"></script>
+      <script type="text/javascript">
+          $(document).ready(function () {
+              MagazineView.init();
+          });
+      </script>
+  </body>
+</html>
+
